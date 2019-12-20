@@ -1,0 +1,108 @@
+####################################################
+# Container Runtime / Docker Configuration         #
+####################################################
+
+container_name="dap"                                # Container name to use when running the appliance
+dap_image="registry.tld/conjur-appliance:11.1.1"    # Docker appliance image as it appears in `docker images --format "{{.Repository}}:{{.Tag}}"`
+seccomp_profile_path=""                             # Path to a docker security profile json file. If left empty, seccomp:unconfined is used.
+host_audit_log_dir=/var/log/conjur                  # Path to store audit logs on the host filesystem
+host_backup_dir=/opt/conjur/backup
+
+####################################################
+# DAP Master Configuration Settings                #
+####################################################
+
+master_host_fqdn="master01.demo.local"              # FQDN of the first master cluster node
+master_lb_fqdn="master-lb.demo.local"               # FQDN of the master cluster load balancer
+follower_lb_fqdn="follower-lb.demo.local"           # FQDN of the follower load balancer
+
+standby_fqdn_1="master02.demo.local"                # Standby Nodes - If there are more than 2, add then as standby_fqdn_#="standby.fqdn"
+standby_fqdn_2="master03.demo.local"
+#standby_fqdn_3=""
+#standby_fqdn_4=""
+
+#dr_standby_fqdn_1="master04.demo.local"
+#dr_standby_fqdn_2="master05.demo.local"
+
+master_alt_names=""                                 # Leave this empty to have it generated 
+                                                    # based on the master_host_fqdn, master_lb_fqdn, and standby_fqdn_N properties.
+                                                    # Otherwise this overrides the generated value.
+
+org_account="lab-dev"                               # Organization Account Name for this instance
+
+####################################################
+# Certificate Signing Request Settings             #
+####################################################
+
+m_subject="$master_lb_fqdn"
+f_subject="$follower_lb_fqdn"
+
+m_dn_0_C="US"
+m_dn_1_ST="TX"
+m_dn_2_L="Houston"
+m_dn_3_O="CyberArk"
+m_dn_4_OU="Ben Labs"
+
+cert_dir=./certs
+cert_config_dir=$cert_dir/config
+cert_output_dir=$cert_dir/output
+
+master_cert_config_file=$cert_config_dir/$m_subject.openssl.conf
+master_key_file=$m_subject.key
+master_key_path=$cert_output_dir/$master_key_file
+master_csr_file_path=$cert_output_dir/$m_subject.csr
+
+follower_cert_config_file=$cert_config_dir/$f_subject.openssl.conf
+follower_key_file=$f_subject.key
+follower_key_path=$cert_output_dir/$follower_key_file
+follower_csr_file_path=$cert_output_dir/$f_subject.csr
+
+####################################################
+# Certificate Import Settings                      #
+####################################################
+
+container_cert_dir=/opt/conjur/backup/certs
+
+master_cert_file=$m_subject.cer
+follower_cert_file=$f_subject.cer
+root_bundle_file=root-bundle.cer                        # This file needs to contain any intermediate CA certificates
+                                                        # and the root CA certificate in the order in which they were
+                                                        # used to sign the server certificates with the root certificate being the last in the file.
+                                                        # For example: cat intermediate.cer root.cer > root-bundle.cer
+
+master_cert_path=$cert_output_dir/$master_cert_file
+follower_cert_path=$cert_output_dir/$follower_cert_file
+root_bundle_cert_path=$cert_putput_dir/$root_bundle_file
+
+####################################################
+# Standby Seed File Generation                     #
+####################################################
+
+seeds_dir=./seeds
+
+##################################################################
+###  DO NOT EDIT -- DO NOT EDIT -- DO NOT EDIT -- DO NOT EDIT  ###
+##################################################################
+
+#####
+# Generate master alt name value
+#####
+
+if [ "$master_alt_names" == "" ];then
+
+    master_alt_names="$master_host_fqdn"
+
+    if [ "$master_lb_fqdn" != "" ];then
+        master_alt_names="$master_lb_fqdn,$master_alt_names"
+    fi
+
+    for i in $(set | grep standby_fqdn_ | sort | cut -d'=' -f2);do
+        if [ "$i" != "" ];then
+            master_alt_names="$master_alt_names,$i"
+        fi
+    done
+fi
+
+##################################################################
+###  END DO NOT EDIT -- END DO NOT EDIT -- END DO NOT EDIT     ###
+##################################################################
