@@ -15,7 +15,7 @@ master_cert_path=$cert_output_dir/$master_cert_file
 follower_cert_path=$cert_output_dir/$follower_cert_file                                                                         
 root_bundle_cert_path=$cert_output_dir/$root_bundle_file                                                                        
                                                                         
-docker exec $container_name "if [ ! -d $container_cert_dir ];then mkdir -p $container_cert_dir; fi"
+docker exec $container_name "[[ -d $container_cert_dir ]] || mkdir -p $container_cert_dir"
 
 docker cp $master_key_path $container_name:$container_cert_dir/$master_key_file
 docker cp $master_cert_path $container_name:$container_cert_dir/$master_cert_file
@@ -41,4 +41,4 @@ sleep 2
 docker exec $container_name \
     evoke ca import \
     -k $container_cert_dir/$follower_key_file \
-    -s $container_cert_dir/$follower_cert_file
+    $container_cert_dir/$follower_cert_file
