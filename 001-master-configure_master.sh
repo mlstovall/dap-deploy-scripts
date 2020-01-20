@@ -7,10 +7,10 @@
 #####
 
 echo -n "Admin Pass: "
-read -s $master_pass
+read -s master_pass
 echo
 echo -n "Confirm: "
-read -s $confirm_pass
+read -s confirm_pass
 echo
 
 if [ "$master_pass" != "$confirm_pass" ];then
