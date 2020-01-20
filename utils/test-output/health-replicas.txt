@@ -1,0 +1,41 @@
+{
+  "services": {
+    "ldap-sync": "disabled",
+    "possum": "ok",
+    "ui": "ok",
+    "ok": true
+  },
+  "database": {
+    "ok": true,
+    "connect": {
+      "main": "ok"
+    },
+    "free_space": {
+      "main": {
+        "kbytes": 27960832,
+        "inodes": 15617460
+      }
+    },
+    "replication_status": {
+      "pg_stat_replication": [
+        {
+          "usename": "follower.dap.bfloyd.machineidentity.io",
+          "application_name": "follower",
+          "client_addr": "34.233.133.41",
+          "backend_start": "2020-01-20 20:18:29 +0000",
+          "state": "streaming",
+          "sent_location": "0/3000060",
+          "replay_location": "0/3000060",
+          "sync_priority": 0,
+          "sync_state": "async",
+          "sent_location_bytes": 50331744,
+          "replay_location_bytes": 50331744,
+          "replication_lag_bytes": 0
+        }
+      ],
+      "pg_current_xlog_location": "0/3000060",
+      "pg_current_xlog_location_bytes": 50331744
+    }
+  },
+  "ok": true
+}

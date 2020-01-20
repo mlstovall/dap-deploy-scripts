@@ -1,0 +1,26 @@
+{
+  "services": {
+    "ui": "ok",
+    "possum": "ok",
+    "ldap-sync": "disabled",
+    "ok": true
+  },
+  "database": {
+    "ok": true,
+    "connect": {
+      "main": "ok"
+    },
+    "free_space": {
+      "main": {
+        "kbytes": 25504680,
+        "inodes": 7165087
+      }
+    },
+    "replication_status": {
+      "streaming": true,
+      "pg_last_xlog_replay_location": "0/3000138",
+      "pg_last_xlog_replay_location_bytes": 50331960
+    }
+  },
+  "ok": true
+}
