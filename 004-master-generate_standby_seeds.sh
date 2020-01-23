@@ -9,6 +9,7 @@
 [[ -d $seeds_dir ]] || mkdir $seeds_dir
 
 cp config.sh rundap-master.sh $seeds_dir
+cp 004-master-generate_standby_seeds.sh $seeds_dir
 
 echo -e "\n===================================\n=== Generating Primary Standby Seed Packages === \n==================================="
 
