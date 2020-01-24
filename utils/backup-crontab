@@ -1,0 +1,1 @@
+0 1 * * * sh /path/to/backup-master.sh
