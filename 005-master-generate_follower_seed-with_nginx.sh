@@ -8,7 +8,7 @@
 
 [[ -d $seeds_dir ]] || mkdir $seeds_dir
 
-cp config.sh rundap-follower.sh $seeds_dir
+cp config.sh rundap-follower.sh nginx.conf $seeds_dir
 
 echo -e "\n===================================\n=== Generating Follower Seed Packages === \n==================================="
 
@@ -21,6 +21,7 @@ docker exec $container_name \
 tar -C $seeds_dir -cf $seeds_dir/$follower_lb_fqdn-pkg.tar \
         $follower_lb_fqdn-seed.tar \
         rundap-follower.sh \
+        nginx.conf \
         config.sh
 
 rm $seeds_dir/$follower_lb_fqdn-seed.tar 
