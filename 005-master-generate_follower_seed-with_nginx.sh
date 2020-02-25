@@ -20,7 +20,7 @@ docker exec $container_name \
 
 tar -C $seeds_dir -cf $seeds_dir/$follower_lb_fqdn-pkg.tar \
         $follower_lb_fqdn-seed.tar \
-        rundap-follower.sh \
+        rundap-follower_with-nginx.sh \
         nginx.conf \
         config.sh
 
