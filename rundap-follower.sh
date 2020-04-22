@@ -9,7 +9,7 @@ if [ "$seccomp_profile_path" != "" ];then
 fi
 
 docker run --name $container_name \
-    -d --restart=always \
+    -d --restart=unless-stopped \
     --security-opt $run_sec_profile \
     --log-driver="journald" \
     -v $host_audit_log_dir:/var/log/conjur \
