@@ -15,4 +15,5 @@ docker run --name $container_name \
     -v $host_audit_log_dir:/var/log/conjur \
     -v $host_backup_dir:/opt/conjur/backup \
     -p "443:443" -p "1999:1999" -p "5432:5432" \
+    -p "444:444" \
     $dap_image

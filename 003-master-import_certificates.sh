@@ -4,9 +4,9 @@
 
 container_cert_dir=/opt/conjur/backup/certs/
 
-master_cert_file=$m_subject.cer
-follower_cert_file=$f_subject.cer
-root_bundle_file=root-bundle.cer                                    # This file needs to contain any intermediate CA certificates 
+master_cert_file=$m_subject.pem
+follower_cert_file=$f_subject.pem
+root_bundle_file=root-bundle.pem                                    # This file needs to contain any intermediate CA certificates 
                                                                     # and the root CA certificate in the order in which they were
                                                                     # used to sign the server certificates with the root certificate being the last in the file.
                                                                     # For example: cat intermediate.cer root.cer > root-bundle.cer
@@ -15,7 +15,7 @@ master_cert_path=$cert_output_dir/$master_cert_file
 follower_cert_path=$cert_output_dir/$follower_cert_file                                                                         
 root_bundle_cert_path=$cert_output_dir/$root_bundle_file                                                                        
                                                                         
-docker exec $container_name "[[ -d $container_cert_dir ]] || mkdir -p $container_cert_dir"
+docker exec $container_name bash -c "mkdir -p $container_cert_dir"
 
 docker cp $master_key_path $container_name:$container_cert_dir/$master_key_file
 docker cp $master_cert_path $container_name:$container_cert_dir/$master_cert_file
